@@ -14,6 +14,7 @@ Lehký WordPress plugin, který přidá interní poznámku k příspěvkům/str�
 3. Aktivuj plugin v administraci
 
 ## Rozšíření (CPT)
+```php
 add_filter('admin_notes_demo_post_types', function(array $types): array {
   $types[] = 'product';
   return $types;
