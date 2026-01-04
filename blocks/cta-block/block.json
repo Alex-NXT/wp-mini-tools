@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "alex-nxt/cta-block-demo",
+  "title": "CTA (Demo)",
+  "category": "widgets",
+  "icon": "megaphone",
+  "description": "Jednoduchý CTA blok s textem a tlačítkem. Renderuje se v PHP.",
+  "textdomain": "cta-block-demo",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "text": { "type": "string", "default": "Chceš tohle na web? Ozvi se a domluvíme se." },
+    "buttonText": { "type": "string", "default": "Kontaktovat" },
+    "url": { "type": "string", "default": "#kontakt" }
+  },
+  "editorScript": "file:./build/index.js",
+  "editorStyle": "file:./build/index.css"
+}
