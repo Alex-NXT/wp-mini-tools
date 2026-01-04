@@ -1,0 +1,23 @@
+.anxt-cta.is-editor {
+  border: 1px dashed #bbb;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.anxt-cta__inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.anxt-cta__text {
+  flex: 1;
+}
+
+.anxt-cta__button {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #999;
+}
