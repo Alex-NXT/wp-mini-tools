@@ -16,6 +16,26 @@ final class Plugin {
   public function register(): void {
     add_action('add_meta_boxes', [$this, 'register_metabox']);
     add_action('save_post', [$this, 'save_metabox']);
+
+    add_filter('manage_post_posts_columns', [$this, 'add_admin_column']);
+    add_action('manage_post_posts_custom_column', [$this, 'render_admin_column'], 10, 2);
+
+    add_filter('manage_page_posts_columns', [$this, 'add_admin_column']);
+    add_action('manage_page_posts_custom_column', [$this, 'render_admin_column'], 10, 2);
+  }
+
+  private function get_post_types(): array {
+    // Výchozí post typy
+    $post_types = ['post', 'page'];
+
+    /**
+     * Umožní přidat další post typy (CPT), kde se metabox zobrazí.
+     *
+     * @param array $post_types Seznam post typů.
+     */
+    $post_types = apply_filters('admin_notes_demo_post_types', $post_types);
+
+    return array_values(array_filter(array_map('sanitize_key', (array) $post_types)));
   }
 
   public function register_metabox(): void {
@@ -23,7 +43,7 @@ final class Plugin {
       'admin-notes-demo',
       __('Admin poznámka', 'admin-notes-demo'),
       [$this, 'render_metabox'],
-      ['post', 'page'],
+      $this->get_post_types(),
       'side',
       'default'
     );
@@ -84,6 +104,32 @@ final class Plugin {
     }
 
     update_post_meta($post_id, self::META_KEY, $value);
+  }
+
+  public function add_admin_column(array $columns): array {
+    $columns['admin_notes_demo_note'] = __('Poznámka', 'admin-notes-demo');
+    return $columns;
+  }
+
+  public function render_admin_column(string $column, int $post_id): void {
+    if ($column !== 'admin_notes_demo_note') {
+      return;
+    }
+
+    $value = (string) get_post_meta($post_id, self::META_KEY, true);
+    $value = trim($value);
+
+    if ($value === '') {
+      echo '—';
+      return;
+    }
+
+    $short = mb_substr($value, 0, 60);
+    if (mb_strlen($value) > 60) {
+      $short .= '…';
+    }
+
+    echo esc_html($short);
   }
 }
 
